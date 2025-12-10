@@ -106,7 +106,7 @@ const steps = computed(() => getStepsToSolution(shapes.value));
             class="ml-4 flex items-center gap-2 px-4 py-2 rounded-lg border-2 border-primary-200 dark:border-primary-800 bg-white dark:bg-neutral-800 hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-all text-primary-600 dark:text-primary-400 font-semibold text-sm"
           >
             <UIcon :name="showSteps ? 'i-ph-caret-up-bold' : 'i-ph-caret-down-bold'" class="text-lg" />
-            <span>{{ showSteps ? 'Ocultar' : 'Ver' }} Pasos</span>
+            <span>{{ showSteps ? 'Ocultar' : 'Ver' }} Pasos Detallados</span>
           </button>
 
         </div>
@@ -117,87 +117,204 @@ const steps = computed(() => getStepsToSolution(shapes.value));
     <Transition
       enter-active-class="transition-all duration-300 ease-out"
       enter-from-class="opacity-0 max-h-0"
-      enter-to-class="opacity-100 max-h-[600px]"
+      enter-to-class="opacity-100 max-h-[800px]"
       leave-active-class="transition-all duration-300 ease-in"
-      leave-from-class="opacity-100 max-h-[600px]"
+      leave-from-class="opacity-100 max-h-[800px]"
       leave-to-class="opacity-0 max-h-0"
     >
       <div v-if="showSteps && hasOperation" class="border-t border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-950 overflow-hidden">
-        <div class="px-6 py-6 max-h-[600px] overflow-y-auto scrollbar-thin scrollbar-thumb-neutral-300 dark:scrollbar-thumb-neutral-700">
+        <div class="px-6 py-6 max-h-[800px] overflow-y-auto scrollbar-thin scrollbar-thumb-neutral-300 dark:scrollbar-thumb-neutral-700">
           
-          <h3 class="text-lg font-bold text-neutral-800 dark:text-neutral-100 mb-4 flex items-center gap-2">
-            <UIcon name="i-ph-list-numbers-bold" class="text-primary-500" />
-            Pasos de la Solución
+          <h3 class="text-xl font-bold text-neutral-800 dark:text-neutral-100 mb-6 flex items-center gap-3">
+            <UIcon name="i-ph-graduation-cap-fill" class="text-2xl text-primary-500" />
+            Solución Paso a Paso
           </h3>
 
           <!-- Paso 1: Fracciones Originales -->
-          <div class="mb-6">
-            <div class="flex items-center gap-2 mb-2">
-              <div class="w-8 h-8 rounded-full bg-primary-500 text-white flex items-center justify-center font-bold text-sm">1</div>
-              <h4 class="font-semibold text-neutral-700 dark:text-neutral-300">Fracciones originales:</h4>
+          <div class="mb-8">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-10 h-10 rounded-full bg-primary-500 text-white flex items-center justify-center font-bold">1</div>
+              <h4 class="text-lg font-bold text-neutral-800 dark:text-neutral-200">Identificar las fracciones</h4>
             </div>
-            <div class="ml-10 bg-white dark:bg-neutral-900 rounded-lg p-4 border border-neutral-200 dark:border-neutral-800">
-              <p class="font-mono text-lg text-neutral-800 dark:text-neutral-200">{{ steps.original }}</p>
-            </div>
-          </div>
-
-          <!-- Paso 2: Denominador Común -->
-          <div class="mb-6">
-            <div class="flex items-center gap-2 mb-2">
-              <div class="w-8 h-8 rounded-full bg-primary-500 text-white flex items-center justify-center font-bold text-sm">2</div>
-              <h4 class="font-semibold text-neutral-700 dark:text-neutral-300">Encontrar el denominador común (MCM):</h4>
-            </div>
-            <div class="ml-10 bg-white dark:bg-neutral-900 rounded-lg p-4 border border-neutral-200 dark:border-neutral-800">
-              <p class="text-neutral-600 dark:text-neutral-400 mb-2">{{ steps.mcmExplanation }}</p>
-              <p class="font-mono text-lg font-bold text-primary-600 dark:text-primary-400">MCM = {{ steps.commonDenom }}</p>
+            <div class="ml-13 bg-white dark:bg-neutral-900 rounded-xl p-5 border-2 border-neutral-200 dark:border-neutral-800 shadow-sm">
+              <p class="text-neutral-600 dark:text-neutral-400 mb-3">Operación a resolver:</p>
+              <p class="font-mono text-2xl font-bold text-neutral-800 dark:text-neutral-200">{{ steps.original }}</p>
             </div>
           </div>
 
-          <!-- Paso 3: Convertir Fracciones -->
-          <div class="mb-6">
-            <div class="flex items-center gap-2 mb-2">
-              <div class="w-8 h-8 rounded-full bg-primary-500 text-white flex items-center justify-center font-bold text-sm">3</div>
-              <h4 class="font-semibold text-neutral-700 dark:text-neutral-300">Convertir cada fracción al denominador común:</h4>
+          <!-- Paso 2: Denominador Común (MCM) -->
+          <div class="mb-8">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-10 h-10 rounded-full bg-primary-500 text-white flex items-center justify-center font-bold">2</div>
+              <h4 class="text-lg font-bold text-neutral-800 dark:text-neutral-200">Encontrar el Mínimo Común Múltiplo (MCM)</h4>
             </div>
-            <div class="ml-10 space-y-2">
-              <div v-for="(conversion, idx) in steps.conversions" :key="idx" class="bg-white dark:bg-neutral-900 rounded-lg p-3 border border-neutral-200 dark:border-neutral-800">
-                <p class="font-mono text-neutral-800 dark:text-neutral-200">{{ conversion }}</p>
+            <div class="ml-13 space-y-3">
+              <!-- Explicación del MCM -->
+              <div class="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4 border-2 border-blue-200 dark:border-blue-800">
+                <div class="flex gap-2 items-start">
+                  <UIcon name="i-ph-info-fill" class="text-blue-500 text-xl mt-0.5 flex-shrink-0" />
+                  <p class="text-sm text-blue-700 dark:text-blue-300">
+                    <strong>¿Por qué necesitamos el MCM?</strong><br>
+                    Para sumar o restar fracciones, todas deben tener el mismo denominador. El MCM nos da el denominador común más pequeño posible.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Pasos del MCM -->
+              <div class="bg-white dark:bg-neutral-900 rounded-xl p-5 border-2 border-neutral-200 dark:border-neutral-800 shadow-sm space-y-2">
+                <p v-for="(step, idx) in steps.lcmSteps" :key="idx" 
+                   class="font-mono text-neutral-700 dark:text-neutral-300"
+                   :class="{ 'font-bold text-primary-600 dark:text-primary-400 text-lg mt-2': step.includes('MCM =') }"
+                >
+                  {{ step }}
+                </p>
               </div>
             </div>
           </div>
 
-          <!-- Paso 4: Sumar Numeradores -->
-          <div class="mb-6">
-            <div class="flex items-center gap-2 mb-2">
-              <div class="w-8 h-8 rounded-full bg-primary-500 text-white flex items-center justify-center font-bold text-sm">4</div>
-              <h4 class="font-semibold text-neutral-700 dark:text-neutral-300">Sumar/restar los numeradores:</h4>
+          <!-- Paso 3: Convertir Fracciones -->
+          <div class="mb-8">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-10 h-10 rounded-full bg-primary-500 text-white flex items-center justify-center font-bold">3</div>
+              <h4 class="text-lg font-bold text-neutral-800 dark:text-neutral-200">Convertir al denominador común</h4>
             </div>
-            <div class="ml-10 bg-white dark:bg-neutral-900 rounded-lg p-4 border border-neutral-200 dark:border-neutral-800">
-              <p class="font-mono text-lg text-neutral-800 dark:text-neutral-200 mb-2">{{ steps.numeratorSum }}</p>
-              <p class="font-mono text-lg font-bold text-primary-600 dark:text-primary-400">{{ steps.beforeSimplify }}</p>
+            <div class="ml-13 space-y-3">
+              <!-- Explicación de la conversión -->
+              <div class="bg-purple-50 dark:bg-purple-900/20 rounded-xl p-4 border-2 border-purple-200 dark:border-purple-800">
+                <div class="flex gap-2 items-start">
+                  <UIcon name="i-ph-info-fill" class="text-purple-500 text-xl mt-0.5 flex-shrink-0" />
+                  <p class="text-sm text-purple-700 dark:text-purple-300">
+                    <strong>¿Cómo convertimos?</strong><br>
+                    Multiplicamos el numerador y denominador por el mismo número para mantener el valor de la fracción. Este número es: MCM ÷ denominador_original.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Cada conversión detallada -->
+              <div v-for="(detail, idx) in steps.conversionDetails" :key="idx" 
+                   class="bg-white dark:bg-neutral-900 rounded-xl p-5 border-2 border-neutral-200 dark:border-neutral-800 shadow-sm">
+                <p class="font-mono text-lg font-bold text-primary-600 dark:text-primary-400 mb-3">
+                  {{ steps.conversions[idx] }}
+                </p>
+                <div class="pl-4 border-l-4 border-neutral-200 dark:border-neutral-700 space-y-1">
+                  <p v-for="(line, lineIdx) in detail.split('\n')" :key="lineIdx" 
+                     class="text-neutral-600 dark:text-neutral-400"
+                     :class="{ 'font-semibold': line.startsWith('•') }"
+                  >
+                    {{ line }}
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
 
-          <!-- Paso 5: Simplificar -->
-          <div v-if="steps.simplified" class="mb-6">
-            <div class="flex items-center gap-2 mb-2">
-              <div class="w-8 h-8 rounded-full bg-primary-500 text-white flex items-center justify-center font-bold text-sm">5</div>
-              <h4 class="font-semibold text-neutral-700 dark:text-neutral-300">Simplificar el resultado:</h4>
+          <!-- Paso 4: Sumar/Restar Numeradores -->
+          <div class="mb-8">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-10 h-10 rounded-full bg-primary-500 text-white flex items-center justify-center font-bold">4</div>
+              <h4 class="text-lg font-bold text-neutral-800 dark:text-neutral-200">Sumar/restar los numeradores</h4>
             </div>
-            <div class="ml-10 bg-white dark:bg-neutral-900 rounded-lg p-4 border border-neutral-200 dark:border-neutral-800">
-              <p class="text-neutral-600 dark:text-neutral-400 mb-2">{{ steps.simplifyExplanation }}</p>
-              <p class="font-mono text-2xl font-bold text-green-600 dark:text-green-400">{{ steps.finalResult }}</p>
+            <div class="ml-13 space-y-3">
+              <!-- Explicación -->
+              <div class="bg-amber-50 dark:bg-amber-900/20 rounded-xl p-4 border-2 border-amber-200 dark:border-amber-800">
+                <div class="flex gap-2 items-start">
+                  <UIcon name="i-ph-info-fill" class="text-amber-500 text-xl mt-0.5 flex-shrink-0" />
+                  <p class="text-sm text-amber-700 dark:text-amber-300">
+                    <strong>¿Por qué solo sumamos numeradores?</strong><br>
+                    Como todas las fracciones ya tienen el mismo denominador ({{ steps.commonDenom }}), solo necesitamos operar con los numeradores. El denominador se mantiene igual.
+                  </p>
+                </div>
+              </div>
+
+              <div class="bg-white dark:bg-neutral-900 rounded-xl p-5 border-2 border-neutral-200 dark:border-neutral-800 shadow-sm">
+                <p class="text-neutral-600 dark:text-neutral-400 mb-2">Operación con numeradores:</p>
+                <p class="font-mono text-xl text-neutral-800 dark:text-neutral-200 mb-4">{{ steps.numeratorSum }}</p>
+                
+                <div class="h-px bg-neutral-200 dark:bg-neutral-700 my-4"></div>
+                
+                <p class="text-neutral-600 dark:text-neutral-400 mb-2">Fracción resultante:</p>
+                <p class="font-mono text-2xl font-bold text-primary-600 dark:text-primary-400">
+                  {{ steps.beforeSimplify }}
+                </p>
+              </div>
             </div>
           </div>
 
-          <!-- Resultado Final (si no se simplificó) -->
-          <div v-else>
-            <div class="flex items-center gap-2 mb-2">
-              <div class="w-8 h-8 rounded-full bg-green-500 text-white flex items-center justify-center font-bold text-sm">✓</div>
-              <h4 class="font-semibold text-green-600 dark:text-green-400">Resultado final:</h4>
+          <!-- Paso 5: Simplificar (si aplica) -->
+          <div v-if="steps.needsSimplification" class="mb-8">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-10 h-10 rounded-full bg-primary-500 text-white flex items-center justify-center font-bold">5</div>
+              <h4 class="text-lg font-bold text-neutral-800 dark:text-neutral-200">Simplificar el resultado</h4>
             </div>
-            <div class="ml-10 bg-green-50 dark:bg-green-900/20 rounded-lg p-4 border-2 border-green-200 dark:border-green-800">
-              <p class="font-mono text-2xl font-bold text-green-600 dark:text-green-400">{{ steps.finalResult }}</p>
+            <div class="ml-13 space-y-3">
+              <!-- Explicación MCD -->
+              <div class="bg-green-50 dark:bg-green-900/20 rounded-xl p-4 border-2 border-green-200 dark:border-green-800">
+                <div class="flex gap-2 items-start">
+                  <UIcon name="i-ph-info-fill" class="text-green-500 text-xl mt-0.5 flex-shrink-0" />
+                  <p class="text-sm text-green-700 dark:text-green-300">
+                    <strong>¿Cómo simplificamos?</strong><br>
+                    Encontramos el Máximo Común Divisor (MCD) del numerador y denominador, luego dividimos ambos entre este número.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Pasos del MCD y simplificación -->
+              <div class="bg-white dark:bg-neutral-900 rounded-xl p-5 border-2 border-neutral-200 dark:border-neutral-800 shadow-sm space-y-2">
+                <p v-for="(step, idx) in steps.gcdSteps" :key="idx" 
+                   class="text-neutral-700 dark:text-neutral-300"
+                   :class="{ 
+                     'font-bold text-lg mt-3 mb-2': step.startsWith('Paso'),
+                     'font-mono': !step.startsWith('Paso') && !step.startsWith('Factores'),
+                     'text-primary-600 dark:text-primary-400 font-semibold': step.includes('MCD(')
+                   }"
+                >
+                  {{ step }}
+                </p>
+              </div>
+
+              <div class="bg-green-50 dark:bg-green-900/20 rounded-xl p-5 border-2 border-green-200 dark:border-green-800">
+                <p class="text-neutral-600 dark:text-neutral-400 mb-2">{{ steps.simplifyExplanation }}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- No necesita simplificación -->
+          <div v-else-if="steps.totalNumeratorValue !== 0" class="mb-8">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center font-bold">5</div>
+              <h4 class="text-lg font-bold text-neutral-800 dark:text-neutral-200">Verificar simplificación</h4>
+            </div>
+            <div class="ml-13 bg-green-50 dark:bg-green-900/20 rounded-xl p-5 border-2 border-green-200 dark:border-green-800">
+              <p class="text-green-700 dark:text-green-300">
+                {{ steps.simplifyExplanation }}
+              </p>
+            </div>
+          </div>
+
+          <!-- Resultado Final -->
+          <div class="border-t-4 border-primary-200 dark:border-primary-800 pt-6">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-12 h-12 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 text-white flex items-center justify-center font-bold text-xl shadow-lg">
+                ✓
+              </div>
+              <h4 class="text-2xl font-bold text-green-600 dark:text-green-400">Respuesta Final</h4>
+            </div>
+            <div class="ml-15 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-2xl p-8 border-4 border-green-300 dark:border-green-700 shadow-lg">
+              <div class="flex items-center justify-center gap-8">
+                <div class="text-center">
+                  <p class="text-sm text-green-600 dark:text-green-400 mb-2 font-semibold uppercase tracking-wider">Fracción</p>
+                  <p class="font-mono text-5xl font-black text-green-700 dark:text-green-300">
+                    {{ steps.finalResult }}
+                  </p>
+                </div>
+                <div class="h-20 w-px bg-green-300 dark:bg-green-700"></div>
+                <div class="text-center">
+                  <p class="text-sm text-green-600 dark:text-green-400 mb-2 font-semibold uppercase tracking-wider">Decimal</p>
+                  <p class="font-mono text-5xl font-black text-green-700 dark:text-green-300">
+                    {{ resultDecimal }}
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
 
