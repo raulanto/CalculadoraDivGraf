@@ -17,7 +17,7 @@
           icon="i-ph-github-logo-fill"
 
           variant="ghost"
-          to="https://github.com"
+          to="https://github.com/raulanto"
           target="_blank"
         />
         <!-- Modo oscuro toggle (si tienes ColorMode configurado) -->
